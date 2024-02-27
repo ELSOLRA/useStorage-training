@@ -3,26 +3,60 @@ import { Props } from "../components/Card/Card";
 import { data, imageString } from "../components/constants/constants";
 import "./product.scss";
 import { useState } from "react";
-import { useCountStore } from "../store/count";
 
-//Efter att ett villkor är mött, ska vi rendera produktinformationen.
+import { CartItem, useCartStore } from "../store/cartStore";
 
-//Om id´t i parametern, matchar id´t i data objektet.
-//Rendera JSX (Visa Rätt UI för användaren)
+
 const Product = () => {
-  const { id } = useParams();
+  const { id } = useParams<{ id?: string }>();
   const [show, setShow] = useState(false);
-  /*   const [count, setCount] = useState<number>(0); */
-  const { count, decrement, increment } = useCountStore();
+  const {  setCart, cart, totalQuantity, totalPrice } = useCartStore();
+ 
+ 
 
   const pokemon = data.find((pokemon) => pokemon.id === id);
 
-  const { desc, name, buttonText } = pokemon as Props;
+  if (!pokemon) {
+   
+    return <p>NO Pokemon to you!!!</p>;
+  }
+
+  const { desc, name, buttonText, price } = pokemon as Props;
 
   const handleClick = () => {
     setShow((prevValue) => !prevValue);
   };
-
+  const handleAddToCart = () => {
+    if (id !== undefined) {
+      const existingProduct = cart.find((item) => item.id === id);
+  
+      if (existingProduct) {
+        // If product already exists in the cart, updating the quantity
+        setCart({
+          cart: cart.map((item) =>
+            item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+          ),
+          totalQuantity: totalQuantity + 1,
+          totalPrice: totalPrice + parseInt(price),
+        });
+      } else {
+        // If product does not exist in the cart, adding a new entry
+        const cartItem: CartItem = {
+          id: id,
+          name,
+          price,
+          quantity: 1,
+        };
+  
+        setCart({
+          cart: [...cart, cartItem],
+          totalQuantity: totalQuantity + 1,
+          totalPrice: totalPrice + parseInt(price),
+        });
+      }
+    }
+  };
+  
   return (
     <section className="product-wrapper">
       <picture>
@@ -33,19 +67,14 @@ const Product = () => {
           <>
             <h4>{name}</h4>
             <p>{desc}</p>
-            <div className="add-to-cart">
-              <button disabled={count < 1} onClick={decrement}>
-                -
-              </button>
-              <p>{count}</p>
-              <button onClick={increment}>+</button>
-            </div>
+            <p>{price}</p>
+            <button className="cart-btn" onClick={handleAddToCart}>ADD TO CART</button>
           </>
         )}
         <button onClick={handleClick}>{buttonText}</button>
       </article>
     </section>
   );
-};
+  };
 
 export default Product;

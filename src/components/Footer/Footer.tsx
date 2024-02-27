@@ -1,5 +1,9 @@
 const Footer = () => {
-  return <div>@Copyright ZoCom JS23 Ballers</div>;
+const fontStyle = {
+  fontSize: '1.5rem', 
+}
+
+  return <div style={fontStyle}>@Copyright Da rizzle chillax</div>;
 };
 
 export default Footer;

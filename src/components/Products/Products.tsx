@@ -7,9 +7,11 @@ type Props = {};
 const Products = (props: Props) => {
   const card = data.map((pokemon) => (
     <Card
+
       id={pokemon.id}
       name={pokemon.name}
       desc={pokemon.desc}
+      price={pokemon.price}
       buttonText={pokemon.buttonText}
     />
   ));
