@@ -29,7 +29,7 @@ const Nav = () => {
     setCart({
       cart: storedCart,
       totalQuantity: newTotalQuantity,
-      totalPrice: 0, // You might want to update totalPrice from sessionStorage as well
+      totalPrice: 0, 
     });
   }, [setCart]);
 
