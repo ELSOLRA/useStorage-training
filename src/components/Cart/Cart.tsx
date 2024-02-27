@@ -35,7 +35,7 @@ const Cart = () => {
 
   return (
     <section className="cart">
-      <h2>Men, it's your cart!Take It!</h2>
+      <h2>Man, it's your cart!Take It!</h2>
       <table>
         <thead>
           <tr>
